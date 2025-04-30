@@ -4,7 +4,7 @@
 https://trading-terminal.tradingview-widget.com/charting_library/package.json
 https://trading-terminal.tradingview-widget.com/
 
-TradingView Chart Integration (Taiyi Master)
+TradingView Chart Integration (marked as 'Taiyi Master')
 
 A complete frontend application integrating the official TradingView Charting Library with custom datafeeds and UI.
 
