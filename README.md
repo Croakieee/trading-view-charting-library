@@ -2,6 +2,7 @@
  some files u can find useful
 
 https://trading-terminal.tradingview-widget.com/charting_library/package.json
+
 https://trading-terminal.tradingview-widget.com/
 
 TradingView Chart Integration (marked as 'Taiyi ')
