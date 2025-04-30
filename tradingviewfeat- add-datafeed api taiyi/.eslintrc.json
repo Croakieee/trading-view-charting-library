@@ -1,0 +1,10 @@
+{
+  "extends": [
+  ],
+  "ignorePatterns": [
+    "./src/charting_library"
+  ],
+  "overrides": [
+
+  ]
+}
