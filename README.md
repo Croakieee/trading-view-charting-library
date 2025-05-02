@@ -7,6 +7,8 @@ https://trading-terminal.tradingview-widget.com/
 
 TradingView Chart Integration (marked as 'Taiyi ')
 
+The working ones are in zip files (to many files to upload)
+
 A complete frontend application integrating the official TradingView Charting Library with custom datafeeds and UI.
 
 ## Project Structure
