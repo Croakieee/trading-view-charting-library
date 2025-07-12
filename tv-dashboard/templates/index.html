@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TradingView Chart Viewer</title>
+    <script src="https://s3.tradingview.com/tv.js"></script>
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: sans-serif;
+            text-align: center;
+        }
+
+        #controls {
+            margin: 20px;
+        }
+
+        input, button, select {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        .indicator-checkbox {
+            display: inline-block;
+            margin: 5px 10px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 1200px;
+            height: 600px;
+            margin: 30px auto;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            z-index: 10;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>TradingView Chart Viewer</h1>
+
+<div id="controls">
+    <input type="text" id="symbolInput" placeholder="Symbol (e.g., BTCUSDT)">
+    <div id="indicatorsList"></div>
+    <button onclick="addChart()">Add Chart</button>
+</div>
+
+<div id="chartsContainer"></div>
+
+<script>
+    async function loadIndicators() {
+        const res = await fetch("/indicators.json");
+        const indicators = await res.json();
+        const container = document.getElementById("indicatorsList");
+
+        indicators.forEach(ind => {
+            const div = document.createElement("div");
+            div.className = "indicator-checkbox";
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = ind.value;
+            checkbox.value = ind.value;
+
+            const label = document.createElement("label");
+            label.htmlFor = ind.value;
+            label.textContent = ind.name;
+
+            div.appendChild(checkbox);
+            div.appendChild(label);
+            container.appendChild(div);
+        });
+    }
+
+    function getSelectedIndicators() {
+        const checkboxes = document.querySelectorAll('#indicatorsList input[type=checkbox]:checked');
+        return Array.from(checkboxes).map(cb => cb.value);
+    }
+
+    function addChart() {
+        const symbolRaw = document.getElementById("symbolInput").value.trim().toUpperCase();
+        const studies = getSelectedIndicators();
+
+        if (!symbolRaw) {
+            alert("Please enter a symbol.");
+            return;
+        }
+
+        const symbol = `BINANCE:${symbolRaw}`;
+        const containerId = `tvchart-${symbolRaw}-${Date.now()}`;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "chart-wrapper";
+        wrapper.id = containerId + "-wrapper";
+
+        const removeBtn = document.createElement("button");
+        removeBtn.innerText = "Remove";
+        removeBtn.className = "remove-btn";
+        removeBtn.onclick = () => wrapper.remove();
+
+        const chartDiv = document.createElement("div");
+        chartDiv.id = containerId;
+
+        wrapper.appendChild(removeBtn);
+        wrapper.appendChild(chartDiv);
+        document.getElementById("chartsContainer").appendChild(wrapper);
+
+        new TradingView.widget({
+            "container_id": containerId,
+            "width": 1200,
+            "height": 600,
+            "symbol": symbol,
+            "interval": "60",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "hide_side_toolbar": false,
+            "allow_symbol_change": true,
+            "details": true,
+            "studies": studies,
+            "hideideas": true
+        });
+    }
+
+    window.onload = loadIndicators;
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+[
+  { "name": "RSI", "value": "RSI@tv-basicstudies" },
+  { "name": "MACD", "value": "MACD@tv-basicstudies" },
+  { "name": "Bollinger Bands", "value": "BollingerBands@tv-basicstudies" },
+  { "name": "LuxAlgo Trendlines", "value": "LuxAlgo - Trendlines with Breaks@LuxAlgo" }
+]
